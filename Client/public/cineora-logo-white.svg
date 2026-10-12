@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80" fill="none">
+  <defs>
+    <linearGradient id="cineora-grad-primary-w" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="50%" stop-color="#6444e4"/>
+      <stop offset="100%" stop-color="#231268"/>
+    </linearGradient>
+    
+    <linearGradient id="cineora-grad-accent-w" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#eae5ff"/>
+      <stop offset="100%" stop-color="#6444e4"/>
+    </linearGradient>
+
+    <filter id="cineora-glow-w" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <g transform="translate(10, 10)">
+    <path d="M 46 6 A 28 28 0 1 0 46 54" 
+          stroke="url(#cineora-grad-primary-w)" 
+          stroke-width="8" 
+          stroke-linecap="round" 
+          fill="none" 
+          filter="url(#cineora-glow-w)" />
+
+    <path d="M 40 16 A 18 18 0 1 0 40 44" 
+          stroke="url(#cineora-grad-accent-w)" 
+          stroke-width="4" 
+          stroke-dasharray="8 3" 
+          stroke-linecap="round" 
+          fill="none" />
+
+    <path d="M 27 23 L 39 30 L 27 37 Z" fill="url(#cineora-grad-accent-w)" />
+          
+    <circle cx="16" cy="30" r="2.5" fill="#ffffff" />
+    <circle cx="46" cy="18" r="2" fill="#6444e4" />
+    <circle cx="46" cy="42" r="2" fill="#6444e4" />
+  </g>
+
+  <text x="80" y="52" 
+        font-family="'Be Vietnam Pro', 'Inter', system-ui, sans-serif" 
+        font-size="34" 
+        font-weight="800" 
+        letter-spacing="1.5" 
+        fill="#ffffff">
+    CINEORA
+  </text>
+  
+  <text x="82" y="66" 
+        font-family="'Be Vietnam Pro', 'Inter', system-ui, sans-serif" 
+        font-size="10" 
+        font-weight="600" 
+        letter-spacing="3" 
+        fill="#a0a0a6">
+    CINEMA &amp; TICKETS
+  </text>
+</svg>

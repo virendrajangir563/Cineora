@@ -1,111 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  /* -------------------------------------------------------------------------- */
+  /* Font Families                                                              */
+  /* -------------------------------------------------------------------------- */
+
+  /* -------------------------------------------------------------------------- */
+  /* Font Sizes                                                                 */
+  /* -------------------------------------------------------------------------- */
+  --text-10: 10px;
+  --text-12: 12px;
+  --text-13: 13px;
+  --text-14: 14px;
+  --text-16: 16px;
+  --text-18: 18px;
+  --text-20  :20px;
+  --text-24 : 24px ;
+  --text-28 : 28px;
+
+  /* -------------------------------------------------------------------------- */
+  /* Line Heights                                                               */
+  /* -------------------------------------------------------------------------- */
+  --leading-14: 14px;
+  --leading-16: 16px;
+  --leading-18: 18px;
+  --leading-19-5: 19.5px;
+  --leading-20: 20px;
+  --leading-21: 21px;
+  --leading-22: 22px;
+  --leading-24: 24px;
+
+  /* -------------------------------------------------------------------------- */
+  /* Font Weights                                                               */
+  /* -------------------------------------------------------------------------- */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* -------------------------------------------------------------------------- */
+  /* Background Colors (6)                                                      */
+  /* -------------------------------------------------------------------------- */
+  --color-bg-white: #ffffff;
+  --color-bg-lavender: #eae5ff;
+  --color-bg-navy: #143152;
+  --color-bg-dark: #1e1e20;
+  --color-bg-black-24: #0000003d;
+  --color-bg-black-40: #00000066;
+
+  /* -------------------------------------------------------------------------- */
+  /* Text Colors (11)                                                           */
+  /* -------------------------------------------------------------------------- */
+  --color-text-white: #ffffff;
+  --color-text-offwhite: #f7f7f7;
+  --color-text-lightgray: #eaeaeb;
+  --color-text-muted: #a0a0a6;
+  --color-text-gray: #8b8b93;
+  --color-text-darkgray: #77777e;
+  --color-text-purple: #6444e4;
+  --color-text-charcoal: #545459;
+  --color-text-deep-purple: #231268;
+  --color-text-dark: #131316;
+  --color-text-black: #000000;
+
+  /* -------------------------------------------------------------------------- */
+  /* Fill Colors (2)                                                            */
+  /* -------------------------------------------------------------------------- */
+  --color-fill-white: #ffffff;
+  --color-fill-cream: #f2ebe3;
+
+  /* -------------------------------------------------------------------------- */
+  /* Border Colors (4)                                                          */
+  /* -------------------------------------------------------------------------- */
+  --color-border-slate: #4b5563;
+  --color-border-dark: #33333a;
+  --color-border-subtle: #00000014;
+  --color-border-muted: #00000029;
+}
+
+/* Custom CSS variables for CSS usage */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Backgrounds */
+  --bg-white: #ffffff;
+  --bg-lavender: #eae5ff;
+  --bg-navy: #143152;
+  --bg-dark: #1e1e20;
+  --bg-black-24: #0000003d;
+  --bg-black-40: #00000066;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Text */
+  --text-color-white: #ffffff;
+  --text-color-offwhite: #f7f7f7;
+  --text-color-lightgray: #eaeaeb;
+  --text-color-muted: #a0a0a6;
+  --text-color-gray: #8b8b93;
+  --text-color-darkgray: #77777e;
+  --text-color-purple: #6444e4;
+  --text-color-charcoal: #545459;
+  --text-color-deep-purple: #231268;
+  --text-color-dark: #131316;
+  --text-color-black: #000000;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Fills */
+  --fill-white: #ffffff;
+  --fill-cream: #f2ebe3;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  /* Borders */
+  --border-slate: #4b5563;
+  --border-dark: #33333a;
+  --border-subtle: #00000014;
+  --border-muted: #00000029;
 }
