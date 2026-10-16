@@ -1,7 +1,9 @@
+
 const express = require("express");
 const router = express.Router();
 
 const cities = require("../data/cities.json");
+const getPopularCities = require("../data/popularCities");
 
 // GET /api/cities
 // GET /api/cities?search=jaipur
@@ -13,27 +15,35 @@ router.get("/", (req, res) => {
     const search = (req.query.search || "").trim().toLowerCase();
     const state = (req.query.state || "").trim().toLowerCase();
 
-    const page = Math.max(1, Number.parseInt(req.query.page, 10) || 1);
-    const requestedLimit = Number.parseInt(req.query.limit, 10) || 100;
+    const page = Math.max(
+      1,
+      Number.parseInt(req.query.page, 10) || 1
+    );
+
+    const requestedLimit =
+      Number.parseInt(req.query.limit, 10) || 100;
+
     const limit = Math.min(100, Math.max(1, requestedLimit));
 
-    // Step A: Search aur state ke according filter
-    
-    // Step A: Search aur state ke according filter
-    
+    // Search by city name and filter by state
+    const filteredCities = cities.filter((city) => {
+      const cityName = (city.city_name || "").trim().toLowerCase();
+      const stateName = (city.state_name || "").trim().toLowerCase();
 
-const filteredCities = cities.filter((city) => {
-  const cityName = city.city_name?.trim().toLowerCase() || "";
+      const matchesSearch = cityName.startsWith(search);
+      const matchesState = !state || stateName === state;
 
-  return !search || cityName.startsWith(search);
-});
+      return matchesSearch && matchesState;
+    });
 
-    // Step B: Pagination
+    // Pagination
     const startIndex = (page - 1) * limit;
-    const results = filteredCities.slice(startIndex, startIndex + limit);
+    const results = filteredCities.slice(
+      startIndex,
+      startIndex + limit
+    );
 
-    // Step C: Response
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       total: filteredCities.length,
       page,
@@ -41,18 +51,39 @@ const filteredCities = cities.filter((city) => {
       data: results,
     });
   } catch (error) {
-    res.status(500).json({
+    console.error("Cities API error:", error);
+
+    return res.status(500).json({
       success: false,
       message: "Cities fetch karne mein problem hui.",
     });
   }
 });
 
-// GET /api/cities/282
-// Ek city ko ID se find karna
+// GET /api/cities/popular
+router.get("/popular", (req, res) => {
+  try {
+    const popular = getPopularCities;
+
+    return res.status(200).json({
+      success: true,
+      count: popular.length,
+      data: popular,
+    });
+  } catch (error) {
+    console.error("Popular cities error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Popular cities fetch nahi ho paayi.",
+    });
+  }
+});
+
+// GET /api/cities/:id
 router.get("/:id", (req, res) => {
   const city = cities.find(
-    (item) => item.city_id === req.params.id
+    (item) => String(item.city_id) === req.params.id
   );
 
   if (!city) {
@@ -62,7 +93,7 @@ router.get("/:id", (req, res) => {
     });
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     data: city,
   });

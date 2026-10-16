@@ -1,4 +1,4 @@
-
+import popularCities from "../data/popularCities";
 const City = require("../models/City");
 
 const getCities = async (req, res) => {
@@ -59,7 +59,16 @@ const getCityById = async (req, res) => {
   }
 };
 
+const getPopularCities = (req, res) => {
+  res.status(200).json({
+    success: true,
+    count: popularCities.length,
+    data: popularCities,
+  });
+};
+
 module.exports = {
   getCities,
   getCityById,
+  getPopularCities
 };
