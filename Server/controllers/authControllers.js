@@ -177,6 +177,7 @@ const verifyMe = async (req, res) => {
 
     return res.status(200).json({
       message: "User verified successfully",
+      isAuthenticated:true,
       user: {
         id: user._id,
         name: user.name,

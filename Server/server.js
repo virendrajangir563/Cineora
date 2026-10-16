@@ -8,7 +8,7 @@ const app = express();
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
-
+const cityRoutes = require("./routes/cityRoutes");
 // CORS configuration
 app.use(
   cors({
@@ -20,7 +20,7 @@ app.use(
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-
+app.use("/api/cities", cityRoutes);
 // Connect Database
 connectDB();
 

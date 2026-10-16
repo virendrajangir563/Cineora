@@ -1,86 +1,87 @@
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import Home from "./pages/Home";
+import CustomerLayout from "./components/CustomerLayout";
+import { VerifyMe, LogOut } from "../services/Authapi";
 
-// Protected Route
-function ProtectedRoute({ children }) {
-  const { user, loading, error } = useAuth();
+function AppRoutes() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (loading) {
-    return <p>Checking login status...</p>;
-  }
+  // App start hone par VerifyMe call hoga
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  if (error) {
-    return (
-      <div>
-        <p>{error}</p>
-        <button onClick={() => window.location.reload()}>
-          Try Again
-        </button>
-      </div>
-    );
-  }
+        const data = await VerifyMe();
+        setUser(data.user);
+      } catch (err) {
+        setUser(null);
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+        if (err.response?.status !== 401) {
+          setError(
+            err.response?.data?.message ||
+              "Unable to verify user. Please try again."
+          );
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return children;
-}
+    checkUser();
+  }, []);
 
-// Temporary Dashboard
-function Dashboard() {
-  const { user, logout } = useAuth();
-
+  // Logout API call
   const handleLogout = async () => {
     try {
-      await logout();
+      await LogOut();
     } finally {
-      // Logout ke baad login page par jao
-      window.location.href = "/login";
+      setUser(null);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 p-8 text-white">
-      <h1 className="mb-4 text-3xl font-bold">
-        Welcome to Cineora!
-      </h1>
-
-      <p>Name: {user?.name}</p>
-      <p>Email: {user?.email}</p>
-      <p>Role: {user?.role}</p>
-
-      <button
-        onClick={handleLogout}
-        className="mt-6 rounded bg-red-600 px-5 py-2 hover:bg-red-700"
-      >
-        Logout
-      </button>
-    </div>
-  );
-}
-
-function AppRoutes() {
-  return (
     <Routes>
-      <Route path="/" element={<Navigate to="/signup" replace />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
+      <Route
+        element={
+          <CustomerLayout
+            user={user}
+            onLogout={handleLogout}
+          />
+        }
+      >
+        <Route
+          path="/"
+          element={<Navigate to="/signup" replace />}
+        />
+
+        <Route path="/signup" element={<Signup />} />
+
+        <Route
+          path="/login"
+          element={<Login setUser={setUser} />}
+        />
+
+        <Route path="/Home" element={<Home />} />
+      </Route>
 
       <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
+        path="*"
+        element={<Navigate to="/login" replace />}
       />
-
-      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }
@@ -88,9 +89,7 @@ function AppRoutes() {
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

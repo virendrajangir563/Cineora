@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   UserRound,
@@ -11,16 +11,29 @@ import {
 } from "lucide-react";
 
 import { Login as loginUser } from "../../services/Authapi";
-import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
 
+  // Five setter functions
+  const [authenticated, setAuthenticated] = useState(false);
+  const [role, setRole] = useState("");
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+
+  // Login form states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Redirect customer after successful login
+  useEffect(() => {
+    if (authenticated && role === "customer") {
+      navigate("/Home", { replace: true });
+    }
+  }, [authenticated, role, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,18 +53,34 @@ function Login() {
         password,
       });
 
-      // Update the logged-in user in AuthContext.
-      setUser(response.user);
+      const user = response.user;
 
-      console.log("Login successful:", response);
+      if (!user) {
+        throw new Error("User data not received from server.");
+      }
 
-      // Navigate after successful login.
-      navigate("/dashboard", { replace: true });
+      // Update authentication data
+      setAuthenticated(true);
+      setRole(user.role);
+      setId(user._id || user.id);
+      setName(user.name);
+      setUserEmail(user.email);
+
+      console.log("Login successful:", {
+        authenticated: true,
+        role: user.role,
+        id: user._id || user.id,
+        name: user.name,
+        email: user.email,
+      });
+
+      // useEffect will handle navigation.
     } catch (err) {
       console.error("Login error:", err);
 
       setError(
         err.response?.data?.message ||
+          err.message ||
           "Login failed. Please try again."
       );
     } finally {
@@ -62,6 +91,7 @@ function Login() {
   return (
     <div className="h-dvh overflow-auto bg-bg-lavender p-3 sm:p-5">
       <div className="mx-auto flex min-h-full max-w-[1500px] flex-col overflow-hidden rounded-2xl border border-border-subtle bg-bg-white">
+
         {/* Header */}
         <header className="flex h-14 shrink-0 items-center justify-between border-b border-border-subtle px-5 sm:px-8">
           <img
@@ -79,6 +109,7 @@ function Login() {
         </header>
 
         <main className="grid flex-1 grid-cols-1 items-center gap-8 px-6 py-6 md:grid-cols-2 lg:gap-12 lg:px-12">
+
           {/* Left Side - Offers */}
           <section className="mx-auto w-full max-w-[500px]">
             <h1 className="text-28 font-semibold text-text-dark">
@@ -168,6 +199,7 @@ function Login() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
+
                 {/* Email */}
                 <div>
                   <label
